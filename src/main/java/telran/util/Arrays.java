@@ -33,10 +33,6 @@ public class Arrays {
         // to apply System.arraycopy method
 
         // I used the second return because the return type in this case does not match
-        if (index < 0 || index > ar.length) {
-            return new int[0];    
-        }
-
         int[] res = new int[ar.length + 1];
         
         System.arraycopy(ar, 0, res, 0, index);
@@ -58,10 +54,6 @@ public class Arrays {
         // to apply System.arraycopy method
 
         // I used the second return because the return type in this case does not match
-        if (index < 0 || index >= numbers.length) {
-            return new int[0];    
-        }
-        
         int[] res = new int[numbers.length - 1];
         
         System.arraycopy(numbers, 0, res, 0, index);

@@ -35,8 +35,6 @@ public class ArraysTest {
         assertArrayEquals(expected, insert(numbers, 6, 55));
         expected = new int[] {10, 7, 12, -4, 13, 3, 14, 44};
         assertArrayEquals(expected, insert(numbers, 7, 44));
-        expected = new int[0];
-        assertArrayEquals(expected, insert(numbers, 100, 44));
     }
 
     @Test
@@ -47,8 +45,6 @@ public class ArraysTest {
         assertArrayEquals(expected, remove(numbers, 0));
         expected = new int[] {10, 7, 12, -4, 13, 3};
         assertArrayEquals(expected, remove(numbers, 6));
-        expected = new int[0];
-        assertArrayEquals(expected, remove(numbers, 100));
     }
 
 }
