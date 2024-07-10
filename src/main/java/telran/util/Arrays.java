@@ -32,7 +32,6 @@ public class Arrays {
         // the given "number" at the given index
         // to apply System.arraycopy method
 
-        // I used the second return because the return type in this case does not match
         int[] res = new int[ar.length + 1];
         
         System.arraycopy(ar, 0, res, 0, index);
@@ -52,8 +51,6 @@ public class Arrays {
  
         // creates new array with no element in "numbers" at "index"
         // to apply System.arraycopy method
-
-        // I used the second return because the return type in this case does not match
         int[] res = new int[numbers.length - 1];
         
         System.arraycopy(numbers, 0, res, 0, index);
