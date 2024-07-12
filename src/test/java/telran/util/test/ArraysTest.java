@@ -4,10 +4,14 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static telran.util.Arrays.*;
+
+import java.util.Random;
 
 public class ArraysTest {
 
+    private static final int N_ELEMENTS = 1_000;
     int[] numbers = {10, 7, 12, -4, 13, 3, 14};
 
     @Test
@@ -45,6 +49,82 @@ public class ArraysTest {
         assertArrayEquals(expected, remove(numbers, 0));
         expected = new int[] {10, 7, 12, -4, 13, 3};
         assertArrayEquals(expected, remove(numbers, 6));
+    }
+
+    /*@Test
+    void pushMaxAtEndTest() {
+        int [] testNumbers = java.util.Arrays.copyOf(numbers, numbers.length);
+        pushMaxAtEnd(testNumbers);
+        assertEquals(14, testNumbers[testNumbers.length - 1]);
+        assertEquals(13, testNumbers[testNumbers.length - 2]);
+        testNumbers = new int[] {20, -10, 10, -17};
+        pushMaxAtEnd(testNumbers);
+        assertEquals(20, testNumbers[testNumbers.length - 1]);
+    }*/
+
+    @Test
+    void sortTest() {
+        int [] testNumbers = java.util.Arrays.copyOf(numbers, numbers.length);
+        int[] expected = {-4, 3, 7, 10, 12, 13, 14};
+        sort(testNumbers);
+        assertArrayEquals(expected, testNumbers);    
+    }
+
+    @Test
+    void sortTestRandomArray() {
+        int [] array = getRandomArray(N_ELEMENTS);
+        int limit = array.length - 1;
+        sort(array);
+        for (int i = 0; i < limit; i++) {
+            assertTrue(array[i] <= array[i + 1]);
+        }
+    }
+
+    private int[] getRandomArray(int nElements) {
+        int[] res = new int[nElements];
+        Random random = new Random();
+        for (int i = 0; i < nElements; i++) {
+            res[i] = random.nextInt();    
+        }
+        return res;
+    }
+
+    @Test
+    void binarySearchTest() {
+        //numbers = 10, 7, 12, -4, 13, 3, 14; 
+        //sorted numbers = -4, 3, 7, 10, 12, 13, 14;
+        assertEquals(3, binarySearch(numbers, 10));
+        assertEquals(4, binarySearch(numbers, 12));
+        assertEquals(6, binarySearch(numbers, 14));
+        assertEquals(-1, binarySearch(numbers, 25));
+
+        int [] array = getRandomArray(101);
+        sort(array);
+        int key = array[67];
+        assertEquals(67, binarySearch(array, key));
+    }
+
+    @Test
+    void insertSortedTest() {
+        int[] sortedNumbers = {-4, 3, 7, 10, 12, 13, 14};
+        int[] expected = {-4, 3, 7, 10, 11, 12, 13, 14};
+        assertArrayEquals(expected, insertSorted(sortedNumbers, 11));
+        int[] expected2 = {-8, -4, 3, 7, 10, 12, 13, 14};
+        assertArrayEquals(expected2, insertSorted(sortedNumbers, -8));
+        int[] expected3 = {-4, 3, 7, 10, 12, 13, 14, 22};
+        assertArrayEquals(expected3, insertSorted(sortedNumbers, 22));    
+    }
+
+    @Test
+    void isOneSwapTest() {
+        int[] numbers = {-4, 13, 7, 10, 12, 3, 14};
+        assertEquals(true, isOneSwap(numbers));
+        int[] numbers1 = {-4, 13, 7, 22, 12, 3, 14};
+        assertEquals(false, isOneSwap(numbers1));
+        int[] numbers2 = {14, 3, 7, 10, 12, 13, -4};
+        assertEquals(true, isOneSwap(numbers2));
+        int[] numbers3 = {-4, 3, 7, 10, 12, 13, 14};
+        assertEquals(false, isOneSwap(numbers3));
     }
 
 }
