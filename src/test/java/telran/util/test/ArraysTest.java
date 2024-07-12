@@ -117,14 +117,16 @@ public class ArraysTest {
 
     @Test
     void isOneSwapTest() {
-        int[] numbers = {-4, 13, 7, 10, 12, 3, 14};
+        int[] numbers = {-4, 13, 7, 10, 12, 3, 14}; // enough to change 13 and 3
         assertEquals(true, isOneSwap(numbers));
-        int[] numbers1 = {-4, 13, 7, 22, 12, 3, 14};
+        int[] numbers1 = {-4, 13, 7, 22, 12, 3, 14}; // more than 1 change
         assertEquals(false, isOneSwap(numbers1));
-        int[] numbers2 = {14, 3, 7, 10, 12, 13, -4};
+        int[] numbers2 = {14, 3, 7, 10, 12, 13, -4}; // enough to change -4 and 14
         assertEquals(true, isOneSwap(numbers2));
-        int[] numbers3 = {-4, 3, 7, 10, 12, 13, 14};
+        int[] numbers3 = {-4, 3, 7, 10, 12, 13, 14}; // already sorted
         assertEquals(false, isOneSwap(numbers3));
+        int[] numbers4 = {3, -4, 7, 10, 12, 13, 14}; // the swaped number (3, -4) are neighbors
+        assertEquals(false, isOneSwap(numbers4));
     }
 
 }
