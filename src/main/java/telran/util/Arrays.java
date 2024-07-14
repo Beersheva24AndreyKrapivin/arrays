@@ -98,8 +98,6 @@ public class Arrays {
         int first = 0;
         int last = ar.length - 1;
 
-        sort(ar);
-
         while (first <= last) {
             int middleIndex = (first + last) / 2;
             if (ar[middleIndex] == key) {
@@ -112,6 +110,10 @@ public class Arrays {
             }
         }
 
+        if (res == -1) {
+            res = -first - 1; 
+        }
+
         return res;
     }
 
@@ -121,76 +123,42 @@ public class Arrays {
         // to insert number at index to keep the array sorted
         // additional sorting is disallowed
 
-        // int[] res = new int[arSorted.length - 1];
+        int index = (binarySearch(arSorted, testNumbers) + 1) * -1;
 
-        int first = 0;
-        int last = arSorted.length - 1;
-
-        while (first <= last) {
-            int middleIndex = (first + last) / 2;
-            if (arSorted[middleIndex] < testNumbers) {
-                first = middleIndex + 1;
-            } else {
-                last = middleIndex - 1;
-            }
-        }
-
-        return insert(arSorted, first, testNumbers);
+        return insert(arSorted, index, testNumbers);
     }
 
     public static boolean isOneSwap(int[] array) {
         // TODO
         // return true if a given array has exactly one swap to get sorted array
         // the swaped number may not be neighbors
-        int[] ar = new int[2];
         int j = 0;
-        int i = 0;
         boolean res = false;
+        int first = 0;
+        int second = 0;
+        int firstIndex = -1;
+        int secondIndex = -1;
 
-        while (i < array.length && j < 2) {
-            // first element > next or last element < previous
-            if (i == 0 && array[i] > array[i+1] || i == array.length-1 && array[i] < array[i-1]) {
-                ar[j] = array[i];
+        for (int i = 0; i < array.length - 1; i++) {
+            if (array[i] > array[i + 1]) {
+                if (first == 0) {
+                    first = array[i];
+                    firstIndex = i;
+                } else {
+                    second = array[i + 1];
+                    secondIndex = i + 1;
+                }
                 j++;
-                i++;
-            // current element > previous and current element > next or current element < previous and curren element < next
-            // and next element > previous element - order check
-            } else if ((i != 0 && i != array.length-1)
-                && (array[i] > array[i-1] && array[i] > array[i+1] || array[i] < array[i-1] && array[i] < array[i+1])
-                && array[i+1] > array[i-1]) {
-                ar[j] = array[i];
-                j++;
-                i++;
             }
-            i++;
         }
-        
-        i = 0;
-        j = j - 1;
-        if (j == 1) {
-            while (i < array.length && j != -1) {
-                // first element > next or last element < previous
-                // and replace element saving order
-                if (i == 0 && array[i] > array[i+1] && ar[j] < array[i+1] 
-                    || i == array.length-1 && array[i] < array[i-1] && ar[j] > array[i-1]) {
-                    j--;
-                    i++;
-                // current element > previous and current element > next or current element < previous and curren element < next
-                // and next element > previous element - order check
-                // and replace element saving order
-                } else if ((i != 0 && i != array.length-1)
-                    && (array[i] > array[i-1] && array[i] > array[i+1] || array[i] < array[i-1] && array[i] < array[i+1])
-                    && array[i+1] > array[i-1]
-                    && ar[j] > array[i-1] && ar[j] < array[i+1]) {
-                    j--;
-                    i++;
-                }
-                i++;
-                if (j == -1) {
-                    res = true;
-                }
-            }
 
+        if (j == 2) {
+            if ((firstIndex == 0 && second <= array[firstIndex + 1]
+                || firstIndex != 0 && array[firstIndex - 1] <= second && second <= array[firstIndex + 1])
+                && (secondIndex == array.length - 1 && first >= array[secondIndex - 1]
+                || secondIndex != array.length - 1 && array[secondIndex - 1] <= first && first >= array[secondIndex])) {
+                res = true;
+            }
         }
 
         return res;

@@ -93,10 +93,14 @@ public class ArraysTest {
     void binarySearchTest() {
         //numbers = 10, 7, 12, -4, 13, 3, 14; 
         //sorted numbers = -4, 3, 7, 10, 12, 13, 14;
-        assertEquals(3, binarySearch(numbers, 10));
-        assertEquals(4, binarySearch(numbers, 12));
-        assertEquals(6, binarySearch(numbers, 14));
-        assertEquals(-1, binarySearch(numbers, 25));
+        int [] testNumbers = java.util.Arrays.copyOf(numbers, numbers.length);
+        sort(testNumbers);
+        assertEquals(3, binarySearch(testNumbers, 10));
+        assertEquals(4, binarySearch(testNumbers, 12));
+        assertEquals(6, binarySearch(testNumbers, 14));
+        assertEquals(-8, binarySearch(testNumbers, 25));
+        assertEquals(-4, binarySearch(testNumbers, 8));
+        assertEquals(-1, binarySearch(testNumbers, -8));
 
         int [] array = getRandomArray(101);
         sort(array);
@@ -127,6 +131,10 @@ public class ArraysTest {
         assertEquals(false, isOneSwap(numbers3));
         int[] numbers4 = {3, -4, 7, 10, 12, 13, 14}; // the swaped number (3, -4) are neighbors
         assertEquals(false, isOneSwap(numbers4));
+        int[] numbers5 = {1, 2, 3, 4, 20, 4, 10, 4}; // One change, same numbers
+        assertEquals(true, isOneSwap(numbers5));
+        int[] numbers6 = {1, 2, 3, 4, 4, 20, 10, 4}; // One change, same numbers
+        assertEquals(true, isOneSwap(numbers6));
     }
 
 }
