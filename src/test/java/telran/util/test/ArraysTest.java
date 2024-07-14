@@ -116,7 +116,10 @@ public class ArraysTest {
         int[] expected2 = {-8, -4, 3, 7, 10, 12, 13, 14};
         assertArrayEquals(expected2, insertSorted(sortedNumbers, -8));
         int[] expected3 = {-4, 3, 7, 10, 12, 13, 14, 22};
-        assertArrayEquals(expected3, insertSorted(sortedNumbers, 22));    
+        assertArrayEquals(expected3, insertSorted(sortedNumbers, 22)); 
+        int [] ar = {1, 2, 3}; 
+        int [] expected4 = {1, 1, 2, 3}; 
+        assertArrayEquals(expected4, insertSorted(ar, 1));   
     }
 
     @Test
@@ -135,6 +138,8 @@ public class ArraysTest {
         assertEquals(true, isOneSwap(numbers5));
         int[] numbers6 = {1, 2, 3, 4, 4, 20, 10, 4}; // One change, same numbers
         assertEquals(true, isOneSwap(numbers6));
+        int [] numbers7 = {1, 2, 13, 4, 4, 4, 4, 20}; 
+        assertTrue(isOneSwap(numbers7));
     }
 
 }

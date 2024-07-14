@@ -111,7 +111,7 @@ public class Arrays {
         }
 
         if (res == -1) {
-            res = -first - 1; 
+            res = -first - 1;
         }
 
         return res;
@@ -123,7 +123,11 @@ public class Arrays {
         // to insert number at index to keep the array sorted
         // additional sorting is disallowed
 
-        int index = (binarySearch(arSorted, testNumbers) + 1) * -1;
+        int index = (binarySearch(arSorted, testNumbers) + 1);
+
+        if (index < 0) {
+            index = index * -1;
+        }
 
         return insert(arSorted, index, testNumbers);
     }
@@ -141,23 +145,33 @@ public class Arrays {
 
         for (int i = 0; i < array.length - 1; i++) {
             if (array[i] > array[i + 1]) {
-                if (first == 0) {
-                    first = array[i];
+                if (firstIndex == -1) {
                     firstIndex = i;
-                } else {
-                    second = array[i + 1];
-                    secondIndex = i + 1;
                 }
+                secondIndex = i + 1;
                 j++;
             }
         }
 
-        if (j == 2) {
-            if ((firstIndex == 0 && second <= array[firstIndex + 1]
-                || firstIndex != 0 && array[firstIndex - 1] <= second && second <= array[firstIndex + 1])
-                && (secondIndex == array.length - 1 && first >= array[secondIndex - 1]
-                || secondIndex != array.length - 1 && array[secondIndex - 1] <= first && first >= array[secondIndex])) {
-                res = true;
+        if (firstIndex != -1 && j <= 2) {
+
+            for (int i = secondIndex + 1; i < array.length; i++) {
+                if (array[i] < array[firstIndex] && array[i] >= array[i-1]) {
+                    secondIndex = i;
+                }
+            }
+
+            if (secondIndex - firstIndex > 1) {
+                first = array[firstIndex];
+                second = array[secondIndex];
+
+                if ((firstIndex == 0 && second <= array[firstIndex + 1]
+                        || firstIndex != 0 && array[firstIndex - 1] <= second && second <= array[firstIndex + 1])
+                        && (secondIndex == array.length - 1 && first >= array[secondIndex - 1]
+                                || secondIndex != array.length - 1 && array[secondIndex - 1] <= first
+                                        && first >= array[secondIndex])) {
+                    res = true;
+                }
             }
         }
 
