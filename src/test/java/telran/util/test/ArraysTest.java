@@ -140,6 +140,34 @@ public class ArraysTest {
         assertEquals(true, isOneSwap(numbers6));
         int [] numbers7 = {1, 2, 13, 4, 4, 4, 4, 20}; 
         assertTrue(isOneSwap(numbers7));
+        int [] arTrue7 = {1, 2, 10, 4, 20, 30};
+        assertEquals(false, isOneSwap(arTrue7));
     }
 
+    @Test
+    void sortAnyTypeTest() {
+        String [] strings = {"lmn", "cfta", "w", "aa"};
+        String [] expectedASCII = {"aa", "cfta", "lmn", "w"};
+        String [] expectedLenth = {"w", "aa", "lmn", "cfta"};
+        sort(strings, new ComparatorASCII());
+        assertArrayEquals(expectedASCII, strings);
+        sort(strings, new ComparatorLenth());
+        assertArrayEquals(expectedLenth, strings);
+    }
+
+    @Test
+    void binarySearchAnyTypeTest() {
+        String [] strings = {"aa", "bbb", "cfta", "ddrk", "lmn", "w"};
+        assertEquals(1, binarySearch(strings, "bbb", new ComparatorASCII()));
+        String [] strings2 = {"aa", "bbb", "cfta", "ddrk", "lmn", "w"};
+        assertEquals(-5, binarySearch(strings2, "dfs", new ComparatorASCII()));
+        Integer [] integers = {1, 4, 6, 10, 15, 20};
+        assertEquals(4, binarySearch(integers, Integer.valueOf(15), new ComparatorInt()));
+        Integer [] integers2 = {1, 4, 6, 10, 15, 20};
+        assertEquals(-2, binarySearch(integers2, Integer.valueOf(3), new ComparatorInt()));
+        Double [] doubles = {1.3, 4.5, 6.8, 10.4, 15.6, 20.3};
+        assertEquals(4, binarySearch(doubles, Double.valueOf(15.6), new ComparatorDouble()));
+        Double [] doubles2 = {1.3, 4.5, 6.8, 10.4, 15.6, 20.3};
+        assertEquals(-2, binarySearch(doubles2, Double.valueOf(3.4), new ComparatorDouble()));
+    }
 }

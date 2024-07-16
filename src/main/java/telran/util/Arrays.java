@@ -1,5 +1,7 @@
 package telran.util;
 
+import java.util.Comparator;
+
 public class Arrays {
 
     public static int search(int[] ar, int key) {
@@ -133,7 +135,6 @@ public class Arrays {
     }
 
     public static boolean isOneSwap(int[] array) {
-        // TODO
         // return true if a given array has exactly one swap to get sorted array
         // the swaped number may not be neighbors
         int j = 0;
@@ -178,4 +179,43 @@ public class Arrays {
         return res;
     }
 
+    public static <T> void sort(T[] array, Comparator<T> comparator) {
+        int length = array.length;
+        boolean flSort = false;
+        do {
+            length--;
+            flSort = true;
+            for (int i = 0; i < length; i++) {
+                if (comparator.compare(array[i], array[i+1]) > 0) {
+                    swap(array, i, i + 1);
+                    flSort = false;
+                }
+            }
+        } while(!flSort);
+    }
+
+    private static <T> void swap(T[] array, int i, int j) {
+        T tmp = array[i];
+        array[i] = array[j];
+        array[j] = tmp;
+    }
+
+    public static <T> int binarySearch(T[] array, T key, Comparator<T> comparator) {
+       
+        int first = 0;
+        int last = array.length - 1;
+        int middleIndex = (first + last) / 2;
+
+        while (first <= last && comparator.compare(array[middleIndex], key) != 0) {
+            if (comparator.compare(array[middleIndex], key) < 0) {
+                first = middleIndex + 1;
+            } else {
+                last = middleIndex - 1;
+            }
+            middleIndex = (first + last) / 2;
+        }
+
+        return first > last ? -(first + 1) : middleIndex;
+
+    }
 }
