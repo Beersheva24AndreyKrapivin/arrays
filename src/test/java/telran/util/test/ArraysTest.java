@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static telran.util.Arrays.*;
 
+import java.util.Comparator;
 import java.util.Random;
 
 public class ArraysTest {
@@ -157,17 +158,54 @@ public class ArraysTest {
 
     @Test
     void binarySearchAnyTypeTest() {
+        Comparator<String> compString = new ComparatorASCII();
         String [] strings = {"aa", "bbb", "cfta", "ddrk", "lmn", "w"};
-        assertEquals(1, binarySearch(strings, "bbb", new ComparatorASCII()));
+        assertEquals(1, binarySearch(strings, "bbb", compString));
         String [] strings2 = {"aa", "bbb", "cfta", "ddrk", "lmn", "w"};
-        assertEquals(-5, binarySearch(strings2, "dfs", new ComparatorASCII()));
+        assertEquals(-5, binarySearch(strings2, "dfs", compString));
+        Comparator<Integer> compInt = new ComparatorInt();
         Integer [] integers = {1, 4, 6, 10, 15, 20};
-        assertEquals(4, binarySearch(integers, Integer.valueOf(15), new ComparatorInt()));
+        assertEquals(4, binarySearch(integers, Integer.valueOf(15), compInt));
         Integer [] integers2 = {1, 4, 6, 10, 15, 20};
-        assertEquals(-2, binarySearch(integers2, Integer.valueOf(3), new ComparatorInt()));
+        assertEquals(-2, binarySearch(integers2, Integer.valueOf(3), compInt));
+        Comparator<Double> compDouble = new ComparatorDouble();
         Double [] doubles = {1.3, 4.5, 6.8, 10.4, 15.6, 20.3};
-        assertEquals(4, binarySearch(doubles, Double.valueOf(15.6), new ComparatorDouble()));
+        assertEquals(4, binarySearch(doubles, Double.valueOf(15.6), compDouble));
         Double [] doubles2 = {1.3, 4.5, 6.8, 10.4, 15.6, 20.3};
-        assertEquals(-2, binarySearch(doubles2, Double.valueOf(3.4), new ComparatorDouble()));
+        assertEquals(-2, binarySearch(doubles2, Double.valueOf(3.4), compDouble));
+    }
+
+    @Test
+    void binarySearchNoComparatorTest() {
+        String [] strings = {"aa", "cfta", "ddrk", "lmn", "w"};
+        Person prs1 = new Person(10, "Vasya");
+        Person prs2 = new Person(20, "Itay");
+        Person prs3 = new Person(30, "Sara");
+        Person [] persons = {prs1, prs2, prs3};
+        assertEquals(1, binarySearch(strings, "cfta"));
+        assertEquals(0, binarySearch(persons, prs1));
+        assertEquals(-1, binarySearch(persons, new Person(5, "Serg")));
+    }
+
+    @Test  
+    void evenOddSorting() {
+        Integer[] array = {7, -8, 10, -100, 13, -10, 99};
+        Integer[] expected = {-100, -10, -8, 10, 99, 13, 7}; //even numbers in ascending order first, odd in descending order after that
+        sort(array, new EvenOddComparator());
+        assertArrayEquals(expected, array);
+    }
+
+    @Test
+    void findTest() {
+        Integer[] array = {7, -8, 10, -100, 13, -10, 99};
+        Integer[] expected = {7, 13, 99};
+        assertArrayEquals(expected, find(array, new OddNumbersPredicate()));
+    }
+
+    @Test
+    void removeIfTest() {
+        Integer[] array = {7, -8, 10, -100, 13, -10, 99};
+        Integer[] expected = {-8, 10, -100, -10};
+        assertArrayEquals(expected, removeIf(array, new OddNumbersPredicate()));    
     }
 }

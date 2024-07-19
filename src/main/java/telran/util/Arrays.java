@@ -1,6 +1,9 @@
 package telran.util;
 
 import java.util.Comparator;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.function.ToIntFunction;
 
 public class Arrays {
 
@@ -205,9 +208,10 @@ public class Arrays {
         int first = 0;
         int last = array.length - 1;
         int middleIndex = (first + last) / 2;
+        int compInt = 0;
 
-        while (first <= last && comparator.compare(array[middleIndex], key) != 0) {
-            if (comparator.compare(array[middleIndex], key) < 0) {
+        while (first <= last && (compInt = comparator.compare(array[middleIndex], key)) != 0) {
+            if (compInt < 0) {
                 first = middleIndex + 1;
             } else {
                 last = middleIndex - 1;
@@ -218,4 +222,34 @@ public class Arrays {
         return first > last ? -(first + 1) : middleIndex;
 
     }
+
+    public static <T> int binarySearch(T[] array, T key) {
+        return binarySearch(array, key, (Comparator<T>) Comparator.naturalOrder());
+    }
+
+    public static <T> T[] insert(T [] array, int index, T item) {    
+
+        T[] res = java.util.Arrays.copyOf(array, array.length + 1);
+        System.arraycopy(array, index, res, index + 1, array.length - index);
+        res[index] = item;
+        return res;
+
+    }
+
+    public static <T> T[] find(T[] array, Predicate<T> predicate) {
+
+        T[] result  = java.util.Arrays.copyOf(array, 0);
+        for (int i = 0; i < array.length; i++) {
+            if (predicate.test(array[i])) {
+                result = insert(result, result.length, array[i]);                
+            }
+        }
+        return result;
+
+    }
+
+    public static <T> T[] removeIf(T[] array, Predicate<T> predicate) {
+        return find(array, predicate.negate());  
+    }
+
 }
