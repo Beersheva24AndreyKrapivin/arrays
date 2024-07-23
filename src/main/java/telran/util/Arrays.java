@@ -252,4 +252,52 @@ public class Arrays {
         return find(array, predicate.negate());  
     }
 
+    /**
+     * 
+     * @param chars - array of char primitives
+     * @param mustBeRules - array of rules that must be true
+     * @param mustNotBeRules - array of rules that must be fales
+     * @return empty error message if array of chars matches all rules otherwise specific error message saying what rules don't match
+     */
+    public static String matchesRules(char[] chars, CharacterRule[] mustBeRules, CharacterRule[] mustNotBeRules) {
+        //consider the class Character for rules definition
+        String res = "";
+
+        for (int i = 0; i < mustBeRules.length; i++) {
+            mustBeRules[i].flag = false;
+            int j = 0;
+            while (j < chars.length && !mustBeRules[i].flag) {
+                if (mustBeRules[i].predicate.test(chars[j])) {
+                    mustBeRules[i].flag = true;    
+                }
+                j++;
+            }    
+        }
+
+        for (int i = 0; i < mustNotBeRules.length; i++) {
+            mustNotBeRules[i].flag = true;
+            int j = 0;
+            while (j < chars.length && mustNotBeRules[i].flag) {
+                if (mustNotBeRules[i].predicate.test(chars[j])) {
+                    mustNotBeRules[i].flag = false;    
+                }
+                j++;
+            }    
+        }
+
+        for (int i = 0; i < mustBeRules.length; i++) {
+            if (!mustBeRules[i].flag) {
+                res = res + (res.equals("") ? "" : ", ") + mustBeRules[i].errorMessage;
+            }    
+        }
+
+        for (int i = 0; i < mustNotBeRules.length; i++) {
+            if (!mustNotBeRules[i].flag) {
+                res = res + (res.equals("") ? "" : ", ") + mustNotBeRules[i].errorMessage;
+            }    
+        }
+
+        return res;
+    }
+
 }
