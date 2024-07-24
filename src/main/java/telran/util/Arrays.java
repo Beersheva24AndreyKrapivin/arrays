@@ -261,42 +261,37 @@ public class Arrays {
      */
     public static String matchesRules(char[] chars, CharacterRule[] mustBeRules, CharacterRule[] mustNotBeRules) {
         //consider the class Character for rules definition
+
+        setFlagInRules(chars, mustBeRules, true);
+        setFlagInRules(chars, mustNotBeRules, false);
+
+        String resMustBeError = checkRules(mustBeRules);
+        String resMustNotBeError = checkRules(mustNotBeRules);
+        
+        return resMustBeError + (!resMustBeError.equals("") && !resMustNotBeError.equals("") ? ", " : "") + resMustNotBeError;
+
+    }
+
+    private static void setFlagInRules(char[] chars, CharacterRule[] currentRules, boolean flag) {
+        for (int i = 0; i < currentRules.length; i++) {
+            currentRules[i].flag = !flag;
+            int j = 0;
+            while (j < chars.length && currentRules[i].flag == !flag) {
+                if (currentRules[i].predicate.test(chars[j])) {
+                    currentRules[i].flag = flag;    
+                }
+                j++;
+            }    
+        }
+    }
+
+    private static String checkRules(CharacterRule[] currentRules) {
         String res = "";
-
-        for (int i = 0; i < mustBeRules.length; i++) {
-            mustBeRules[i].flag = false;
-            int j = 0;
-            while (j < chars.length && !mustBeRules[i].flag) {
-                if (mustBeRules[i].predicate.test(chars[j])) {
-                    mustBeRules[i].flag = true;    
-                }
-                j++;
+        for (int i = 0; i < currentRules.length; i++) {
+            if (!currentRules[i].flag) {
+                res = res + (res.equals("") ? "" : ", ") + currentRules[i].errorMessage;
             }    
         }
-
-        for (int i = 0; i < mustNotBeRules.length; i++) {
-            mustNotBeRules[i].flag = true;
-            int j = 0;
-            while (j < chars.length && mustNotBeRules[i].flag) {
-                if (mustNotBeRules[i].predicate.test(chars[j])) {
-                    mustNotBeRules[i].flag = false;    
-                }
-                j++;
-            }    
-        }
-
-        for (int i = 0; i < mustBeRules.length; i++) {
-            if (!mustBeRules[i].flag) {
-                res = res + (res.equals("") ? "" : ", ") + mustBeRules[i].errorMessage;
-            }    
-        }
-
-        for (int i = 0; i < mustNotBeRules.length; i++) {
-            if (!mustNotBeRules[i].flag) {
-                res = res + (res.equals("") ? "" : ", ") + mustNotBeRules[i].errorMessage;
-            }    
-        }
-
         return res;
     }
 
